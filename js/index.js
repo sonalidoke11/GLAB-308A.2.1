@@ -52,17 +52,17 @@ class Character {
 }
 
 
-const robin = new Character("Robin");
-robin.inventory = ["sword", "potion", "artifact"];
-robin.companion = new Character("Leo");
-robin.companion.type = "Cat";
-robin.companion.companion = new Character("Frank");
-robin.companion.companion.type = "Flea";
-robin.companion.companion.inventory = ["small hat", "sunglasses"];
+const robin1 = new Character("Robin");
+robin1.inventory = ["sword", "potion", "artifact"];
+robin1.companion = new Character("Leo");
+robin1.companion.type = "Cat";
+robin1.companion.companion = new Character("Frank");
+robin1.companion.companion.type = "Flea";
+robin1.companion.companion.inventory = ["small hat", "sunglasses"];
 
-robin.companion.companion.roll(5);       // since it's being a class no need to add classanme to call function
+robin1.companion.companion.roll(5);       // since it's being a class no need to add classanme to call function
 
-robin.companion.roll(5)
+robin1.companion.roll(5)
 
 
 
@@ -74,11 +74,22 @@ class Adventurer extends Character {
       this.role = role;
       // Every adventurer starts with a bed and 50 gold coins.
       this.inventory.push("bedroll", "50 gold coins");
+
+        // console.log(Adventurer.ROLES) ///// /******* Since it's static we have to use it with classname.array */
+        if(Adventurer.ROLES.includes(this.role)){
+            console.log("This role is available"); 
+        }else{
+            console.log("Role not available");
+            throw new Error("Role not valid"); 
+        }
     }
     // Adventurers have the ability to scout ahead of them.
     scout () {
       console.log(`${this.name} is scouting ahead...`);
       super.roll();
+    }
+    isValidRole(role) {
+        
     }
 }
 
@@ -91,5 +102,38 @@ class Companion extends Character {
 }
     
 
-    
+    const adventurer1 = new Adventurer("Arthur", "Healer");  // Valid role
+    const adventurer2 = new Adventurer("Arthur", "Painter");  // Not Valid role
+
+
+
+//////////// Part 5 : 
+
+class AdventurerFactory {  
+  constructor (role) {
+    this.role = role;
+    this.adventurers = [];
+  }
+  generate (name) {
+    const newAdventurer = new Adventurer(name, this.role);
+    this.adventurers.push(newAdventurer);
+  }
+  findByIndex (index) {
+    return this.adventurers[index];
+  }
+  findByName (name) {
+    return this.adventurers.find((a) => a.name === name);
+  }
+}
+
+const healers = new AdventurerFactory("Healer");
+const robin = healers.generate("Robin");
+
+console.log(healers);
+console.log(robin);
+
+
+
+
+
     
